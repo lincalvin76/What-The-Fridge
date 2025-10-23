@@ -109,6 +109,7 @@ const handleFormSubmission = async (e) => {
     }
   } catch (err) {
     console.error('Network error:', err);
+    alert("Either the server's are down or you have too many items in your fridge!")
   } finally {
     setCountLoad(false);
   }
@@ -130,7 +131,7 @@ const handleFormSubmission = async (e) => {
       <div className="absolute inset-0 bg-gradient-radial from-[#3a3a3a] via-[#1a1a1a] to-[#0e0e0e] opacity-90 h-screen w-screen pointer-events-none"></div>
       <div className="bg-/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-[0_0_40px_rgba(0,0,0,0.6)] w-1/4 h-full slide-fade-in" >
         <div className="flex flex-col items-center justify-center ml-5 pr-0">
-            <p className="text-6xl text-red-50 mt-5 font-titillium mb-6 text-center">WHAT THE FRIDGE?</p>
+            <p className="text-4xl text-red-50 mt-5 font-titillium mb-6 text-center">WHAT THE FRIDGE?</p>
 
             <pre className="text-gray-400 text-sm whitespace-pre-wrap text-center mb-10">
               Ever stare into your fridge, wondering what to cook for breakfast, lunch, dinner, or even just a snack?
@@ -199,13 +200,13 @@ const handleFormSubmission = async (e) => {
             )}
             
             <div className="mt-5 font-titillium text-gray-500">
-              <p className="my-6 text-center">Last Image Uploaded:</p>
+              <p className="mt-5 text-center">Last Image Uploaded:</p>
               
               <img
                 id="bottom_image"
                 src={image2 ? image2 : "/assests/logo.png"}
                 alt="Preview"
-                className="w-full h-70 object-contain rounded-lg overflow-hidden hover:scale-110 transition-all duration-300"
+                className="w-full h-full object-contain rounded-lg overflow-hidden hover:scale-103 transition-all duration-300"
               />
             </div>
 
@@ -307,13 +308,33 @@ const handleFormSubmission = async (e) => {
 
                       <td className="p-1 text-center">
                         <button
-                          onClick={() => 
-                            setResultData(prev => {
-                              const updated = { ...prev  };
-                              delete updated[item];
-                              return updated;
-                            })
-                          }
+                          onClick={() => {
+                          setResultData(prev => {
+                            const updated = { ...prev };
+                            delete updated[item];
+
+                            const updatedEntries = Object.entries(updated);
+                            const newTotalPages = Math.max(1, Math.ceil(updatedEntries.length / itemsPerPage));
+
+                            const startIndex = page * itemsPerPage;
+                            const endIndex = startIndex + itemsPerPage;
+                            const visibleNow = updatedEntries.slice(startIndex, endIndex);
+
+                            let newPage = page;
+
+                            if (visibleNow.length === 0 && page > 0) {
+                              newPage = page - 1;
+                            }
+
+                            if (newPage >= newTotalPages) {
+                              newPage = newTotalPages - 1;
+                            }
+
+                            setPage(newPage);
+
+                            return updated;
+                          });
+                        }}
                           className='hover:bg-red-700 text-white rounded transition-all duration-300 hover:scale-110'
                         >
                         🗑️
@@ -439,7 +460,7 @@ const handleFormSubmission = async (e) => {
                       }
                     } catch (error) {
                       console.error("Network error:", error);
-                      alert("Failed to connect to server");
+                      alert("Either the server's are down or you have too many ingredients, try removing some!");
                     } finally {
                       setSearchLoad(false);
                     }
