@@ -129,7 +129,7 @@ const handleFormSubmission = async (e) => {
   return (
     <div className="bg-[#0e0e0e] h-screen w-screen flex flex-row">
       <div className="absolute inset-0 bg-gradient-radial from-[#3a3a3a] via-[#1a1a1a] to-[#0e0e0e] opacity-90 h-screen w-screen pointer-events-none"></div>
-      <div className="bg-/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-[0_0_40px_rgba(0,0,0,0.6)] w-1/4 h-full slide-fade-in" >
+      <div className="bg-/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-[0_0_40px_rgba(0,0,0,0.6)] w-1/4 max-h-screen overflow-y-auto slide-fade-in" >
         <div className="flex flex-col items-center justify-center ml-5 pr-0">
             <p className="text-4xl text-red-50 mt-5 font-titillium mb-6 text-center">WHAT THE FRIDGE?</p>
 
@@ -206,8 +206,9 @@ const handleFormSubmission = async (e) => {
                 id="bottom_image"
                 src={image2 ? image2 : "/assests/logo.png"}
                 alt="Preview"
-                className="w-full h-full object-contain rounded-lg overflow-hidden hover:scale-103 transition-all duration-300"
+                className="w-full h-full object-contain hover:scale-103 transition-all duration-300"
               />
+
             </div>
 
         </div>
